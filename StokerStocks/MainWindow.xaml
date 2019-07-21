@@ -1,0 +1,69 @@
+﻿<Window x:Class="StokerStocks.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:StokerStocks"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="621.239" Width="995.133">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Titulo da coluna de ativos -->
+        <TextBlock Text="Meus Ativos" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+
+        <!-- Relação de Ativos -->
+        <ListBox Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos}" DisplayMemberPath="Ticket" />
+
+
+        <!-- Titulo do Relatório -->
+        <TextBlock Grid.Column="1" Text="Acompanhamento de Desempenho do Ativo" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+
+        <TabControl Grid.Column="1" Grid.Row="1">
+            
+            <!-- Evolução do Patrimônio -->
+            <TabItem Header="Evolução" >
+                <DataGrid Grid.Column="1" Grid.Row="1" Margin="10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Data" Width="90" />
+                        <DataGridTextColumn Header="Posição" Width="90" />
+                        <DataGridTextColumn Header="V. Médio" Width="90" />
+                        <DataGridTextColumn Header="V. Fechamento" Width="90" />
+                        <DataGridTextColumn Header="Resultado" Width="90" />
+                        <DataGridTextColumn Header="V. Provento" Width="90" />
+                        <DataGridTextColumn Header="V. Acum. Proventos" Width="90" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            
+            <!-- Ordens Executadas -->
+            <TabItem Header="Ordens Executadas">
+                <DataGrid Grid.Column="1" Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos[0].Ordems}" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Data" Width="140" Binding="{Binding Date}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Ticket" Width="70" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Op" Width="70" Binding="{Binding Operação}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="N. Corretagem" Width="80" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Quantidade" Width="80" Binding="{Binding Quantidade}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="V. Unitário" Width="80" Binding="{Binding ValorUnitário}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="V. Total" Width="80" Binding="{Binding ValorTotal}" IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            
+        </TabControl>
+        
+        
+    </Grid>
+
+</Window>
