@@ -15,7 +15,7 @@ namespace StokerStocks
 
             Ativos = BancoDados.CarregarAtivos();
 
-            Ativos[0].ObterHistorico();
+            //Ativos[0].ObterHistorico();
 
         }
 

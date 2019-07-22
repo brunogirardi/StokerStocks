@@ -71,6 +71,7 @@
     <Compile Include="BaseDados\BancoDados.cs" />
     <Compile Include="Classes\Cotacao.cs" />
     <Compile Include="Classes\Historico.cs" />
+    <Compile Include="Classes\Posicao.cs" />
     <Compile Include="Classes\Proventos.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Page Include="MainWindow.xaml">

@@ -6,7 +6,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:StokerStocks"
         mc:Ignorable="d"
-        Title="MainWindow" Height="621.239" Width="995.133">
+        Title="MainWindow" Height="621.239" Width="1270.133">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -32,31 +32,35 @@
         <TabControl Grid.Column="1" Grid.Row="1">
             
             <!-- Evolução do Patrimônio -->
-            <TabItem Header="Evolução" >
-                <DataGrid Grid.Column="1" Grid.Row="1" Margin="10">
+            <TabItem Header="Ordens" >
+                <DataGrid Grid.Column="1" Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos[0].Historicos}" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Data" Width="90" />
-                        <DataGridTextColumn Header="Posição" Width="90" />
-                        <DataGridTextColumn Header="V. Médio" Width="90" />
-                        <DataGridTextColumn Header="V. Fechamento" Width="90" />
-                        <DataGridTextColumn Header="Resultado" Width="90" />
-                        <DataGridTextColumn Header="V. Provento" Width="90" />
-                        <DataGridTextColumn Header="V. Acum. Proventos" Width="90" />
+                        <DataGridTextColumn Header="Data" Width="90" Binding="{Binding Data}" />
+                        <DataGridTextColumn Header="Operação" Width="90" Binding="{Binding Operação}" />
+                        <DataGridTextColumn Header="Quant. Operação" Width="90" Binding="{Binding QuantidadeOperacao}" />
+                        <DataGridTextColumn Header="Quant. Total" Width="90" Binding="{Binding QuantidadeAcumulada}" />
+                        <DataGridTextColumn Header="Preço Operação" Width="90" Binding="{Binding PrecoUnitarioOperacao}" />
+                        <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedioCompra}" />
+                        <DataGridTextColumn Header="Saldo Investido" Width="90" Binding="{Binding TotalInvestidoAcumulado}" />
+                        <DataGridTextColumn Header="Resultado Operação" Width="90" Binding="{Binding ResultadoOperacao}" />
+                        <DataGridTextColumn Header="Resultado Acumulado" Width="90" Binding="{Binding ResultadoAcumulado}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
             
             <!-- Ordens Executadas -->
-            <TabItem Header="Ordens Executadas">
-                <DataGrid Grid.Column="1" Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos[0].Ordems}" AutoGenerateColumns="False" CanUserAddRows="False">
+            <TabItem Header="Acompanhamento Mensal">
+                <DataGrid Grid.Column="1" Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos[0].Posicoes}" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Data" Width="140" Binding="{Binding Date}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Ticket" Width="70" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Op" Width="70" Binding="{Binding Operação}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="N. Corretagem" Width="80" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Quantidade" Width="80" Binding="{Binding Quantidade}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="V. Unitário" Width="80" Binding="{Binding ValorUnitário}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="V. Total" Width="80" Binding="{Binding ValorTotal}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Periodo" Width="100" Binding="{Binding Data}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Quantidade" Width="90" Binding="{Binding Quantidade}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedio}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Total Investido" Width="90" Binding="{Binding TotalInvestido}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Preço Fechamento" Width="90" Binding="{Binding PrecoFechamento}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Total Atualizado" Width="90" Binding="{Binding TotalFechamento}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Result. Virtual" Width="90" Binding="{Binding ResultadoVirtual}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Result. Consolidado" Width="90" Binding="{Binding ResultadoConsolidade}" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Result. Projetado" Width="90" Binding="{Binding ResultadoAtual}" IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

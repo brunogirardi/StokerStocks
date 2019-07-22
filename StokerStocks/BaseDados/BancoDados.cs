@@ -14,21 +14,23 @@ namespace StokerStocks
         {
             ObservableCollection<Ativo> temp = new ObservableCollection<Ativo>();
 
-            temp.Add(new Ativo()
-            {
-                Ticket = "SPTW11",
-                Corretora = "Socopa",
-                Ordems = new ObservableCollection<Ordem>()
-                {
-                    new Ordem(){ Date = new DateTime(2016, 09, 12), Operação = Operações.Compra, Quantidade = 27, ValorUnitário = 55.5m },
-                    new Ordem(){ Date = new DateTime(2016, 10, 04), Operação = Operações.Compra, Quantidade = 10, ValorUnitário = 57.6m },
-                    new Ordem(){ Date = new DateTime(2016, 10, 19), Operação = Operações.Compra, Quantidade = 3, ValorUnitário = 61.3m },
-                    new Ordem(){ Date = new DateTime(2017, 03, 06), Operação = Operações.Venda, Quantidade = 2, ValorUnitário = 80.5m },
-                    new Ordem(){ Date = new DateTime(2017, 03, 15), Operação = Operações.Venda, Quantidade = 38, ValorUnitário = 81.5m },
-                }
-            });
+            temp.Add(new Ativo("SPTW11"));
 
             return temp;
+        }
+
+        public static ObservableCollection<Ordem> CarregarOrdens(string Ticket)
+        {
+            return new ObservableCollection<Ordem>()
+                    {
+                        new Ordem(){ Date = new DateTime(2016, 09, 12), Operação = Operações.Compra, Quantidade = 27, ValorUnitário = 55.5m },
+                        new Ordem(){ Date = new DateTime(2016, 10, 04), Operação = Operações.Compra, Quantidade = 10, ValorUnitário = 57.6m },
+                        new Ordem(){ Date = new DateTime(2016, 10, 19), Operação = Operações.Compra, Quantidade = 3, ValorUnitário = 61.3m },
+                        new Ordem(){ Date = new DateTime(2017, 02, 06), Operação = Operações.Venda, Quantidade = 2, ValorUnitário = 80.5m },
+                        new Ordem(){ Date = new DateTime(2017, 03, 08), Operação = Operações.Compra, Quantidade = 10, ValorUnitário = 81.1m },
+                        new Ordem(){ Date = new DateTime(2017, 03, 15), Operação = Operações.Venda, Quantidade = 38, ValorUnitário = 81.5m },
+                        new Ordem(){ Date = new DateTime(2019, 06, 25), Operação = Operações.Venda, Quantidade = 10, ValorUnitário = 88.9m },
+                    };
         }
 
         /// <summary>
@@ -41,7 +43,8 @@ namespace StokerStocks
         {
             ObservableCollection<Cotacao> DB = new ObservableCollection<Cotacao>()
             {
-                new Cotacao() { Data = new DateTime(2019,6,26), Abertura=88.97m, Maxima=88.97m, Minima=86.30m, Fechamento=87.78m },
+                new Cotacao() { Data = new DateTime(2019,7,19), Abertura=88.90m, Maxima=89.00m, Minima=87.07m, Fechamento=87.18m },
+                new Cotacao() { Data = new DateTime(2019,6,28), Abertura=88.97m, Maxima=88.97m, Minima=86.30m, Fechamento=88.03m },
                 new Cotacao() { Data = new DateTime(2019,5,31), Abertura=88.2m, Maxima=90m, Minima=86m, Fechamento=89m },
                 new Cotacao() { Data = new DateTime(2019,5,31), Abertura=88.2m, Maxima=90m, Minima=86m, Fechamento=89m },
                 new Cotacao() { Data = new DateTime(2019,4,30), Abertura=85.95m, Maxima=88.9m, Minima=84m, Fechamento=88.2m },
@@ -104,9 +107,12 @@ namespace StokerStocks
 
             ObservableCollection<Cotacao> Resultado = new ObservableCollection<Cotacao>();
 
+            DateTime FinalMes = new DateTime(Final.Year, Final.Month, DateTime.DaysInMonth(Final.Year, Final.Month), 23, 59, 59);
+            DateTime InicioMes = new DateTime(Inicio.Year, Inicio.Month, 1, 0, 0, 0);
+
             foreach (Cotacao item in DB)
             {
-                if ((item.Data > Inicio) && (item.Data <= Final))
+                if ((item.Data > InicioMes) && (item.Data <= FinalMes))
                 {
                     Resultado.Add(item);
                 }
@@ -124,7 +130,8 @@ namespace StokerStocks
         {
             ObservableCollection<Cotacao> DB = new ObservableCollection<Cotacao>()
             {
-                new Cotacao() { Data = new DateTime(2019,6,26), Abertura=88.97m, Maxima=88.97m, Minima=86.30m, Fechamento=87.78m },
+                new Cotacao() { Data = new DateTime(2019,7,19), Abertura=88.90m, Maxima=89.00m, Minima=87.07m, Fechamento=87.18m },
+                new Cotacao() { Data = new DateTime(2019,6,28), Abertura=88.97m, Maxima=88.97m, Minima=86.30m, Fechamento=88.03m },
                 new Cotacao() { Data = new DateTime(2019,5,31), Abertura=88.2m, Maxima=90m, Minima=86m, Fechamento=89m },
                 new Cotacao() { Data = new DateTime(2019,5,31), Abertura=88.2m, Maxima=90m, Minima=86m, Fechamento=89m },
                 new Cotacao() { Data = new DateTime(2019,4,30), Abertura=85.95m, Maxima=88.9m, Minima=84m, Fechamento=88.2m },
@@ -187,9 +194,12 @@ namespace StokerStocks
 
             ObservableCollection<Cotacao> Resultado = new ObservableCollection<Cotacao>();
 
+            DateTime FinalMes = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month), 23, 59, 59);
+            DateTime InicioMes = new DateTime(Inicio.Year, Inicio.Month, 1, 0, 0, 0);
+
             foreach (Cotacao item in DB)
             {
-                if (item.Data > Inicio)
+                if ((item.Data > InicioMes) && (item.Data <= FinalMes))
                 {
                     Resultado.Add(item);
                 }
