@@ -10,25 +10,42 @@ namespace StokerStocks
         /// <summary>
         /// Atualiza o banco de dados com as cotações faltantes
         /// </summary>
-        public async static void CotacaoUpdate(int IdAtivo)
+        public async static void UpdateCotacao(int IdAtivo)
         {
 
-            List<Cotacao> cotacoes;
+            List<Cotacao> cotacoesAPI;
+            List<Cotacao> cotacoesInserir = new List<Cotacao>();
             Ativo ativo = MySqlQueries.CarregarAtivos(IdAtivo);
             Cotacao ultimaCotacao = MySqlQueries.CarregarUltimaCotacao(IdAtivo);
 
             // Verifica se o periodo é menor que 120 dias e solicita da API o resultado compacto
-            if (ultimaCotacao.Data.Subtract(DateTime.Today).TotalDays > 120)
+            if (ultimaCotacao.Data.Subtract(DateTime.Today).TotalDays > 140)
             {
-                cotacoes = await ApiClient.ConsultarCotacao(ativo.CodigoAPI, true);
+                cotacoesAPI = await ApiClient.ConsultarCotacao(ativo.CodigoAPI, true);
             }
             // Solicita da API o resultado do histórico completo
             else
             {
-                cotacoes = await ApiClient.ConsultarCotacao(ativo.CodigoAPI, false);
+                cotacoesAPI = await ApiClient.ConsultarCotacao(ativo.CodigoAPI, false);
             }
 
+            foreach (Cotacao item in cotacoesAPI)
+            {
+                // Verifica se a ultima cotação do BD está de acordo com o retorno da API
+                if (ultimaCotacao.Data == item.Data)
+                {
+                    item.IdCotacoes = ultimaCotacao.IdCotacoes;
+                    // Implementar o update do item se o mesmo for diferente do registro retornado
+                }
+                // Se a data da cotação for mais nova que adiciona na coleção temporária
+                else if (ultimaCotacao.Data < item.Data)
+                {
+                    cotacoesInserir.Add(item);
+                }
+            }
 
+            // Insere os itens no banco de dados
+            MySqlQueries.InserirCotacoes(cotacoesInserir, IdAtivo);
 
         }
 
@@ -93,8 +110,7 @@ namespace StokerStocks
         {
             return new DateTime(date.Year, date.Month, 1);
         }
-
-
+        
         /// <summary>
         /// Calcula o ultimo dia do mês com base na data repassada como parametro
         /// </summary>

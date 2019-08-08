@@ -6,6 +6,8 @@ namespace StokerStocks
     public class Cotacao : INotifyPropertyChanged
     {
 
+        public int IdCotacoes { get; set; }
+
         public DateTime Data { get; set; }
 
         public decimal Maxima { get; set; }

@@ -64,7 +64,7 @@ namespace StokerStocks
 
             using (IDbConnection cnn = new MySqlConnection(LoadConnectionString()))
             {
-                var output = cnn.QuerySingleOrDefault<Ativo>("SELECT * FROM ativos WHERE idAtivos = @Id;", new { IdAtivo });
+                var output = cnn.QuerySingleOrDefault<Ativo>("SELECT * FROM ativos WHERE idAtivos = @Id;", new { Id = IdAtivo });
 
                 return output;
             }
@@ -262,7 +262,7 @@ namespace StokerStocks
             using (IDbConnection cnn = new MySqlConnection(LoadConnectionString()))
             {
 
-                var output = cnn.Query<Cotacao>("SELECT * FROM cotacoes WHERE idativos=@Id ORDER BY data DESC LIMIT 1;", new { Id = IdAtivo });
+                var output = cnn.QuerySingle<Cotacao>("SELECT * FROM cotacoes WHERE idativos=@Id ORDER BY data DESC LIMIT 1;", new { Id = IdAtivo });
 
                 return (Cotacao)output;
 

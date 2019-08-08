@@ -152,7 +152,7 @@ namespace StokerStocks
 
         private void ExecutarCarregarAtivo(object obj)
         {
-            CotacaoManager.HistoricoMensal(2, new DateTime(2019, 6, 1), DateTime.Today);
+            CotacaoManager.UpdateCotacao(2);
         }
 
         /// <summary>
