@@ -8,18 +8,21 @@ namespace StokerStocks
 {
     public class Ativo : INotifyPropertyChanged
     {
-        public Ativo(string ticket)
+
+        public Ativo()
         {
-            Ticket = ticket;
 
-            Ordems = BancoDados.CarregarOrdens(ticket);
-
-            ObterHistorico();
         }
+
+        public int IdAtivos { get; set; }
 
         public string Ticket { get; set; }
 
-        public string CompanyName { get; set; }
+        public string Empresa { get; set; }
+
+        public string CodigoAPI { get; set; }
+
+        public TipoAtivo TipoAtivo { get; set; }
 
         public string Corretora { get; set; }
 
@@ -44,19 +47,19 @@ namespace StokerStocks
             Vendas = Ordems.Where(x => x.Operação == Operações.Venda).Sum(x => x.Quantidade);
 
             // Verifica a primeira data de operação do ativo
-            InicioOp = Ordems.Min(x => x.Date);
+            InicioOp = Ordems.Min(x => x.Data);
 
             // Verifica se ainda existe ações do ativo
             if ((Compras - Vendas) > 0)
             {
                 // Carrega as cotações para o periodo 
                 FinalOp = UltimoDiaMes(DateTime.Today);
-                Cotacoes = BancoDados.CarregarCotacoes(InicioOp);
+                //Cotacoes = BancoDados.CarregarCotacoes(InicioOp);
             }
             else
             {
-                FinalOp = UltimoDiaMes(Ordems.Max(x => x.Date));
-                Cotacoes = BancoDados.CarregarCotacoes(InicioOp, FinalOp);
+                FinalOp = UltimoDiaMes(Ordems.Max(x => x.Data));
+                //Cotacoes = BancoDados.CarregarCotacoes(InicioOp, FinalOp);
             }
 
             // Inicia a variavel do historico do ativo
@@ -69,10 +72,10 @@ namespace StokerStocks
                 // Adiciona todas as Ordens ao historico do ativo
                 Historico.Add(new Historico()
                 {
-                    Data = item.Date,
+                    Data = item.Data,
                     Operação = item.Operação,
                     QuantidadeOperacao = item.Quantidade,
-                    PrecoUnitarioOperacao = item.ValorUnitário,
+                    PrecoUnitarioOperacao = item.Preço,
                 });
 
             }
@@ -131,7 +134,7 @@ namespace StokerStocks
                 posicoes.Add(new Posicao()
                 {
                     Data = dataAtual,
-                    PrecoFechamento = Cotacoes.Where(x => (x.Data < dataAtual) && (x.Data >= PrimeiroDiaMes(dataAtual))).First().Fechamento,
+                    //PrecoFechamento = Cotacoes.Where(x => (x.Data < dataAtual) && (x.Data >= PrimeiroDiaMes(dataAtual))).First().Fechamento,
                     Quantidade = Quantidade,
                     PrecoMedio = PrecoMedio,
                     ResultadoConsolidade = Resultado
@@ -159,21 +162,6 @@ namespace StokerStocks
             if (temp.Count > 0) return temp.OrderBy(x => x.Data).Last();
 
             return null;
-        }
-
-        private decimal ResultadoConsolidadoDoPeriodo(DateTime data)
-        {
-
-            decimal Total = 0;
-            foreach (Historico item in Historicos)
-            {
-                if ((item.Data < data) && (item.Data >= PrimeiroDiaMes(data)))
-                {
-                    Total += item.ResultadoOperacao;
-                }
-            }
-
-            return Total;
         }
 
         private DateTime UltimoDiaMes(DateTime data)

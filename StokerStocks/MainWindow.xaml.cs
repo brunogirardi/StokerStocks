@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 
 namespace StokerStocks
 {
@@ -19,5 +20,6 @@ namespace StokerStocks
             DataContext = vm;
             
         }
+
     }
 }

@@ -14,7 +14,7 @@ namespace StokerStocks
         {
             ObservableCollection<Ativo> temp = new ObservableCollection<Ativo>();
 
-            temp.Add(new Ativo("SPTW11"));
+            
 
             return temp;
         }
@@ -22,15 +22,15 @@ namespace StokerStocks
         public static ObservableCollection<Ordem> CarregarOrdens(string Ticket)
         {
             return new ObservableCollection<Ordem>()
-                    {
-                        new Ordem(){ Date = new DateTime(2016, 09, 12), Operação = Operações.Compra, Quantidade = 27, ValorUnitário = 55.5m },
-                        new Ordem(){ Date = new DateTime(2016, 10, 04), Operação = Operações.Compra, Quantidade = 10, ValorUnitário = 57.6m },
-                        new Ordem(){ Date = new DateTime(2016, 10, 19), Operação = Operações.Compra, Quantidade = 3, ValorUnitário = 61.3m },
-                        new Ordem(){ Date = new DateTime(2017, 02, 06), Operação = Operações.Venda, Quantidade = 2, ValorUnitário = 80.5m },
-                        new Ordem(){ Date = new DateTime(2017, 03, 08), Operação = Operações.Compra, Quantidade = 10, ValorUnitário = 81.1m },
-                        new Ordem(){ Date = new DateTime(2017, 03, 15), Operação = Operações.Venda, Quantidade = 38, ValorUnitário = 81.5m },
-                        new Ordem(){ Date = new DateTime(2019, 06, 25), Operação = Operações.Venda, Quantidade = 10, ValorUnitário = 88.9m },
-                    };
+                {
+                    new Ordem(){ Date = new DateTime(2016, 09, 12), Operação = Operações.Compra, Quantidade = 27, ValorUnitário = 55.5m },
+                    new Ordem(){ Date = new DateTime(2016, 10, 04), Operação = Operações.Compra, Quantidade = 10, ValorUnitário = 57.6m },
+                    new Ordem(){ Date = new DateTime(2016, 10, 19), Operação = Operações.Compra, Quantidade = 3, ValorUnitário = 61.3m },
+                    new Ordem(){ Date = new DateTime(2017, 02, 06), Operação = Operações.Venda, Quantidade = 2, ValorUnitário = 80.5m },
+                    new Ordem(){ Date = new DateTime(2017, 03, 08), Operação = Operações.Compra, Quantidade = 10, ValorUnitário = 81.1m },
+                    new Ordem(){ Date = new DateTime(2017, 03, 15), Operação = Operações.Venda, Quantidade = 38, ValorUnitário = 81.5m },
+                    new Ordem(){ Date = new DateTime(2019, 06, 25), Operação = Operações.Venda, Quantidade = 10, ValorUnitário = 88.9m },
+                };
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace StokerStocks
                 new Cotacao() { Data = new DateTime(2019,5,31), Abertura=88.2m, Maxima=90m, Minima=86m, Fechamento=89m },
                 new Cotacao() { Data = new DateTime(2019,4,30), Abertura=85.95m, Maxima=88.9m, Minima=84m, Fechamento=88.2m },
                 new Cotacao() { Data = new DateTime(2019,3,29), Abertura=80.89m, Maxima=88m, Minima=79.5m, Fechamento=86m },
-                new Cotacao() { Data = new DateTime(2019,2,28), Abertura=80.94m, Maxima=82.79m, Minima=78.75m, Fechamento=81m },
+                new Cotacao() { Data = new DateTime(2019,2,128), Abertura=80.94m, Maxima=82.79m, Minima=78.75m, Fechamento=81m },
                 new Cotacao() { Data = new DateTime(2019,1,31), Abertura=75.24m, Maxima=81.99m, Minima=74.8m, Fechamento=80.5m },
                 new Cotacao() { Data = new DateTime(2018,12,28), Abertura=74.79m, Maxima=77.99m, Minima=72.26m, Fechamento=75.26m },
                 new Cotacao() { Data = new DateTime(2018,11,30), Abertura=73.9m, Maxima=75.2m, Minima=72.02m, Fechamento=74.95m },

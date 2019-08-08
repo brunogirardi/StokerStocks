@@ -16,6 +16,8 @@ namespace StokerStocks
 
         public decimal Fechamento { get; set; }
 
+        public long Volume { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

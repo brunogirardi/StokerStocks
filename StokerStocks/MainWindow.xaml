@@ -5,49 +5,81 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:StokerStocks"
+        xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        Title="MainWindow" Height="621.239" Width="1270.133">
+        Title="MainWindow" Height="742" Width="1565">
+
+    <Window.Resources>
+        <ObjectDataProvider x:Key="ListaOperações" ObjectType="{x:Type local:OperaçõesClass}" MethodName="Listar" />
+    </Window.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
 
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Titulo da coluna de ativos -->
-        <TextBlock Text="Meus Ativos" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
-
-        <!-- Relação de Ativos -->
-        <ListBox Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos}" DisplayMemberPath="Ticket" />
-
-
         <!-- Titulo do Relatório -->
-        <TextBlock Grid.Column="1" Text="Acompanhamento de Desempenho do Ativo" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+        <TabControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="0,0,10,10">
 
-        <TabControl Grid.Column="1" Grid.Row="1">
-            
             <!-- Evolução do Patrimônio -->
             <TabItem Header="Ordens" >
-                <DataGrid Grid.Column="1" Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos[0].Historicos}" AutoGenerateColumns="False" CanUserAddRows="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Data" Width="90" Binding="{Binding Data}" />
-                        <DataGridTextColumn Header="Operação" Width="90" Binding="{Binding Operação}" />
-                        <DataGridTextColumn Header="Quant. Operação" Width="90" Binding="{Binding QuantidadeOperacao}" />
-                        <DataGridTextColumn Header="Quant. Total" Width="90" Binding="{Binding QuantidadeAcumulada}" />
-                        <DataGridTextColumn Header="Preço Operação" Width="90" Binding="{Binding PrecoUnitarioOperacao}" />
-                        <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedioCompra}" />
-                        <DataGridTextColumn Header="Saldo Investido" Width="90" Binding="{Binding TotalInvestidoAcumulado}" />
-                        <DataGridTextColumn Header="Resultado Operação" Width="90" Binding="{Binding ResultadoOperacao}" />
-                        <DataGridTextColumn Header="Resultado Acumulado" Width="90" Binding="{Binding ResultadoAcumulado}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Margin="3">
+
+                        <TextBlock Text="Corretora" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="24" Margin="0,21,0,0" 
+                              ItemsSource="{Binding Corretoras}" DisplayMemberPath="Nome" 
+                              SelectedIndex="{Binding NotaSelecionada.Corretora, Converter={StaticResource CorretoraToIndexConverter}}"
+                              IsEditable="True" />
+
+                        <TextBlock Text="Ativos" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,50,0,0" />
+                        <ListBox ItemsSource="{Binding Notas}" DisplayMemberPath="Numero" Margin="0,71,0,33" SelectedItem="{Binding NotaSelecionada}" />
+                        <Button Content="+" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Margin="0,0,0,8" Command="{Binding CarregarAtivo}" Grid.Column="1" />
+                        <Button Content="-" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Margin="0,0,26,8" Grid.Column="1" />
+                    </Grid>
+
+                    <Grid Grid.Column="1" Margin="3">
+                        <!-- Inserir / editar ordens -->
+                        <TextBlock Text="Ticket" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" Width="60" Margin="0,21,0,0" IsReadOnly="True" Height="24" />
+
+                        <TextBlock Text="Nome do Ativo" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="65,0,0,0" />
+                        <TextBox VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="65,21,95,0" IsReadOnly="True" Height="24" />
+
+                        <TextBlock Text="Resultado" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,38,0" Grid.Column="1" />
+                        <TextBox VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Right" Width="90" Margin="0,20,0,0" IsReadOnly="True" Height="24" />
+
+                        <!-- Lista de ordens -->
+                        <DataGrid ItemsSource="{Binding Ativos[0].Historicos}" AutoGenerateColumns="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CanUserAddRows="False" Margin="0,55,0,0" Grid.ColumnSpan="2">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Data" Width="90" Binding="{Binding Data}" />
+                                <DataGridTextColumn Header="Operação" Width="90" Binding="{Binding Operação}" />
+                                <DataGridTextColumn Header="Quant. Operação" Width="90" Binding="{Binding QuantidadeOperacao}" />
+                                <DataGridTextColumn Header="Quant. Total" Width="90" Binding="{Binding QuantidadeAcumulada}" />
+                                <DataGridTextColumn Header="Preço Operação" Width="90" Binding="{Binding PrecoUnitarioOperacao}" />
+                                <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedioCompra}" />
+                                <DataGridTextColumn Header="Saldo Investido" Width="90" Binding="{Binding TotalInvestidoAcumulado}" />
+                                <DataGridTextColumn Header="Resultado Operação" Width="90" Binding="{Binding ResultadoOperacao}" />
+                                <DataGridTextColumn Header="Resultado Acumulado" Width="90" Binding="{Binding ResultadoAcumulado}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+
+
+                </Grid>
+
+
             </TabItem>
-            
+
             <!-- Ordens Executadas -->
             <TabItem Header="Acompanhamento Mensal">
                 <DataGrid Grid.Column="1" Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos[0].Posicoes}" AutoGenerateColumns="False" CanUserAddRows="False">
@@ -64,10 +96,113 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
-            
+
+            <!-- Notas de Corretagem -->
+            <TabItem Header="Operações" IsSelected="True" >
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Lista de Notas de Corretagem -->
+                    <Grid Margin="3">
+
+                        <TextBlock Text="Nota Corretagem" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-2,0,0,0" Grid.ColumnSpan="2" />
+                        <ListBox ItemsSource="{Binding Notas}" DisplayMemberPath="Numero" Margin="0,20,0,33" SelectedItem="{Binding NotaSelecionada}" Grid.ColumnSpan="2" />
+                        <Button Content="+" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Margin="0,0,0,8" Command="{Binding AdicionarNota}" Grid.Column="1" />
+                        <Button Content="-" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Margin="0,0,26,8" Command="{Binding ExcluirNota}" Grid.Column="1" />
+                    </Grid>
+
+                    <!-- Edição e Visualização das Notas de Corretagem -->
+                    <Grid Grid.Column="1" Margin="3" >
+
+                        <!-- Painel de Inserir/Editar Nota de Corretagem -->
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="{Binding NotaSelecionada, Converter={StaticResource NullToVisibilityConverter}}">
+
+                            <TextBlock Text="Nota Corretagem" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-2,0,0,0" />
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" Margin="0,20,0,0" Height="24" Text="{Binding NotaSelecionada.Numero}" />
+
+                            <TextBlock Text="Data Pregão" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="105,0,0,0" />
+                            <DatePicker VerticalAlignment="Top" HorizontalAlignment="Left" Margin="105,20,0,0" Height="24" Width="101" Text="{Binding NotaSelecionada.Data}" />
+
+                            <TextBlock Text="Corretora"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="211,0,0,0" />
+                            <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left" Width="130" Height="24" Margin="211,20,0,0" ItemsSource="{Binding Corretoras}" DisplayMemberPath="Nome" 
+                                      SelectedIndex="{Binding NotaSelecionada.Corretora, Converter={StaticResource CorretoraToIndexConverter}}" />
+
+                            <Button Content="Salvar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Height="24" Margin="346,20,0,0" Command="{Binding SalvarNota}" />
+
+                        </Grid>
+
+                        <!-- Inserir / editar ordens -->
+                        <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Visibility="{Binding ModoEdiçãoOrdem, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="Ticket" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,598,0" />
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right" Width="60" Margin="0,20,570,0" Height="24" 
+                                 Text="{Binding OrdemSelecionada.Ticket}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="LostFocus">
+                                        <cmd:EventToCommand Command="{Binding TicketOrderLostFocus}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </TextBox>
+
+                            <TextBlock Text="Tipo Ordem"  VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,501,0" />
+                            <ComboBox VerticalAlignment="Top" HorizontalAlignment="Right" Width="130" Height="24" Margin="0,20,435,0" 
+                                  ItemsSource="{Binding Source={StaticResource ListaOperações}}"
+                                  SelectedValue="{Binding OrdemSelecionada.Operação, Converter={StaticResource OperaçõesConverter}}"
+                                  IsEditable="True" />
+
+                            <TextBlock Text="Quantidade" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,367,0" />
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right" Width="90" Margin="0,20,340,0" Height="24" Text="{Binding OrdemSelecionada.Quantidade}" />
+
+                            <TextBlock Text="Preço" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,305,0" />
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right" Width="90" Margin="0,20,245,0" Height="24" Text="{Binding OrdemSelecionada.Preço}" />
+
+                            <TextBlock Text="Total" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,214,0" />
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right" Width="90" Margin="0,20,150,0" IsReadOnly="True" IsTabStop="False" Height="24" Text="{Binding OrdemSelecionada.Total, Mode=OneWay}" />
+
+                        </Grid>
+
+                        <Button Content="Adicionar" HorizontalAlignment="Right" VerticalAlignment="Top" Width="70" Height="24" Margin="0,20,75,0" Command="{Binding AdicionarOrdem}" />
+                        <Button Content="Excluir" HorizontalAlignment="Right" VerticalAlignment="Top" Width="70" Height="24" Margin="0,20,0,0" Command="{Binding ExcluirOrdem}" />
+
+                        <!-- Lista de ordens -->
+                        <DataGrid ItemsSource="{Binding NotaSelecionada.Ordens}" 
+                                  AutoGenerateColumns="False" 
+                                  VerticalAlignment="Stretch" 
+                                  HorizontalAlignment="Stretch" 
+                                  CanUserAddRows="False" 
+                                  Margin="0,63,0,96"
+                                  SelectedItem="{Binding OrdemSelecionada}"
+                                  IsEnabled="{Binding ModoEdiçãoOrdem}" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Operação" Width="70" Binding="{Binding Operação}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Mercado" Width="100" Binding="{Binding TipoMercado}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Ativo" Width="80" Binding="{Binding Ticket}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Descrição Ativo" Width="*" Binding="{Binding Empresa}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Quantidade" Width="90" Binding="{Binding Quantidade}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Preço" Width="90" Binding="{Binding Preço}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Total" Width="90" Binding="{Binding Total}" IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <TextBlock VerticalAlignment="Bottom" Text="Total - Compras:" HorizontalAlignment="Right" TextAlignment="Right" Margin="0,0,95,62" Width="107" />
+                        <TextBox VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" IsReadOnly="True" Height="24" Margin="0,0,0,58" Text="{Binding NotaSelecionada.TotalCompra, Mode=OneWay}" />
+
+                        <TextBlock VerticalAlignment="Bottom" Text="Total - Vendas:" HorizontalAlignment="Right" TextAlignment="Right" Margin="0,0,95,33" Width="107" />
+                        <TextBox VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" IsReadOnly="True" Height="24" Margin="0,0,0,29" Text="{Binding NotaSelecionada.TotalVenda, Mode=OneWay}" />
+
+                        <TextBlock VerticalAlignment="Bottom" Text="Total - Operações:" HorizontalAlignment="Right" TextAlignment="Right" Margin="0,0,95,4" Width="106" />
+                        <TextBox VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="90" IsReadOnly="True" Height="24" Text="{Binding NotaSelecionada.TotalOperacao, Mode=OneWay}" />
+                    </Grid>
+
+                </Grid>
+            </TabItem>
+
         </TabControl>
-        
-        
+
+
     </Grid>
 
 </Window>
