@@ -26,57 +26,9 @@
         <TabControl Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="0,0,10,10">
 
             <!-- Evolução do Patrimônio -->
-            <TabItem Header="Ordens" >
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <TabItem Header="Ordens" IsSelected="True">
 
-                    <Grid Margin="3">
-
-                        <TextBlock Text="Corretora" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                        <ComboBox VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="24" Margin="0,21,0,0" 
-                              ItemsSource="{Binding Corretoras}" DisplayMemberPath="Nome" 
-                              SelectedIndex="{Binding NotaSelecionada.Corretora, Converter={StaticResource CorretoraToIndexConverter}}"
-                              IsEditable="True" />
-
-                        <TextBlock Text="Ativos" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,50,0,0" />
-                        <ListBox ItemsSource="{Binding Notas}" DisplayMemberPath="Numero" Margin="0,71,0,33" SelectedItem="{Binding NotaSelecionada}" />
-                        <Button Content="+" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Margin="0,0,0,8" Command="{Binding CarregarAtivo}" Grid.Column="1" />
-                        <Button Content="-" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Margin="0,0,26,8" Grid.Column="1" />
-                    </Grid>
-
-                    <Grid Grid.Column="1" Margin="3">
-                        <!-- Inserir / editar ordens -->
-                        <TextBlock Text="Ticket" VerticalAlignment="Top" HorizontalAlignment="Left" />
-                        <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" Width="60" Margin="0,21,0,0" IsReadOnly="True" Height="24" />
-
-                        <TextBlock Text="Nome do Ativo" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="65,0,0,0" />
-                        <TextBox VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="65,21,95,0" IsReadOnly="True" Height="24" />
-
-                        <TextBlock Text="Resultado" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,38,0" Grid.Column="1" />
-                        <TextBox VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Right" Width="90" Margin="0,20,0,0" IsReadOnly="True" Height="24" />
-
-                        <!-- Lista de ordens -->
-                        <DataGrid ItemsSource="{Binding Ativos[0].Historicos}" AutoGenerateColumns="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CanUserAddRows="False" Margin="0,55,0,0" Grid.ColumnSpan="2">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Data" Width="90" Binding="{Binding Data}" />
-                                <DataGridTextColumn Header="Operação" Width="90" Binding="{Binding Operação}" />
-                                <DataGridTextColumn Header="Quant. Operação" Width="90" Binding="{Binding QuantidadeOperacao}" />
-                                <DataGridTextColumn Header="Quant. Total" Width="90" Binding="{Binding QuantidadeAcumulada}" />
-                                <DataGridTextColumn Header="Preço Operação" Width="90" Binding="{Binding PrecoUnitarioOperacao}" />
-                                <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedioCompra}" />
-                                <DataGridTextColumn Header="Saldo Investido" Width="90" Binding="{Binding TotalInvestidoAcumulado}" />
-                                <DataGridTextColumn Header="Resultado Operação" Width="90" Binding="{Binding ResultadoOperacao}" />
-                                <DataGridTextColumn Header="Resultado Acumulado" Width="90" Binding="{Binding ResultadoAcumulado}" />
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </Grid>
-
-
-                </Grid>
-
+                <local:AtivosOrdens Margin="5" />
 
             </TabItem>
 

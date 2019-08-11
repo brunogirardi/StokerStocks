@@ -24,6 +24,10 @@ namespace StokerStocks
 
         public TipoAtivo TipoAtivo { get; set; }
 
+        public string Regiao { get; set; }
+
+        public string Moeda { get; set; }
+
         public string Corretora { get; set; }
 
         public ObservableCollection<Ordem> Ordems { get; set; }
@@ -39,7 +43,6 @@ namespace StokerStocks
             int Vendas;
             DateTime InicioOp;
             DateTime FinalOp;
-            ObservableCollection<Cotacao> Cotacoes;
             ObservableCollection<Historico> Historico;
 
             // Verifica a quantidade de compras e vendas para o ativo

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace StokerStocks
 {
@@ -18,34 +19,49 @@ namespace StokerStocks
             Ativo ativo = MySqlQueries.CarregarAtivos(IdAtivo);
             Cotacao ultimaCotacao = MySqlQueries.CarregarUltimaCotacao(IdAtivo);
 
+            if (ultimaCotacao == null)
+            {
+                ultimaCotacao = new Cotacao()
+                {
+                    Data = new DateTime(1900, 1, 1),
+                    Abertura = 0,
+                    Fechamento = 0,
+                    Maxima = 0,
+                    Minima = 0,
+                    Volume = 0
+                };
+            }
+
             // Verifica se o periodo é menor que 120 dias e solicita da API o resultado compacto
             if (ultimaCotacao.Data.Subtract(DateTime.Today).TotalDays > 140)
             {
-                cotacoesAPI = await ApiClient.ConsultarCotacao(ativo.CodigoAPI, true);
+                cotacoesAPI = await ApiClient.ConsultarCotacao(ativo.CodigoAPI, true, TipoCotacao.Diaria);
             }
             // Solicita da API o resultado do histórico completo
             else
             {
-                cotacoesAPI = await ApiClient.ConsultarCotacao(ativo.CodigoAPI, false);
+                cotacoesAPI = await ApiClient.ConsultarCotacao(ativo.CodigoAPI, false, TipoCotacao.Diaria);
             }
 
             foreach (Cotacao item in cotacoesAPI)
             {
+
                 // Verifica se a ultima cotação do BD está de acordo com o retorno da API
                 if (ultimaCotacao.Data == item.Data)
                 {
                     item.IdCotacoes = ultimaCotacao.IdCotacoes;
-                    // Implementar o update do item se o mesmo for diferente do registro retornado
+                    MySqlQueries.UpdateCotacoes(item);
                 }
                 // Se a data da cotação for mais nova que adiciona na coleção temporária
                 else if (ultimaCotacao.Data < item.Data)
                 {
                     cotacoesInserir.Add(item);
                 }
+
             }
 
             // Insere os itens no banco de dados
-            MySqlQueries.InserirCotacoes(cotacoesInserir, IdAtivo);
+            if (cotacoesInserir.Count > 0)  MySqlQueries.CreateCotacoes(cotacoesInserir, IdAtivo);
 
         }
 
@@ -56,13 +72,13 @@ namespace StokerStocks
         /// <param name="inicio"></param>
         /// <param name="final"></param>
         /// <returns></returns>
-        public static ObservableCollection<Cotacao> HistoricoMensal(int IdAtivo, DateTime inicio, DateTime final)
+        public static List<Cotacao> HistoricoMensal(int IdAtivo, DateTime inicio, DateTime final)
         {
             // Coleção com a serie histórica
-            ObservableCollection<Cotacao> cotacoes = MySqlQueries.CarregarCotacoes(IdAtivo, InicioMes(inicio), FinalMes(final));
+            List<Cotacao> cotacoes = MySqlQueries.CarregarCotacoes(IdAtivo, InicioMes(inicio), FinalMes(final));
 
             // Inicializa a coleção de retorno
-            ObservableCollection<Cotacao> retorno = new ObservableCollection<Cotacao>();
+            List<Cotacao> retorno = new List<Cotacao>();
 
             Cotacao processando = null;
 

@@ -15,12 +15,16 @@ namespace StokerStocks
     public partial class App : Application
     {
 
-        public ObservableCollection<Corretoras> Corretoras { get; set; }
+        public List<Corretoras> Corretoras { get; set; }
+
+        public List<Ativo> Ativos { get; set; }
 
         public App()
         {
 
             Corretoras = MySqlQueries.CarregarCorretoras();
+
+            Ativos = MySqlQueries.CarregarAtivos();
 
         }
 

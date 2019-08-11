@@ -108,6 +108,7 @@
     </ApplicationDefinition>
     <Compile Include="BaseDados\ApiClient.cs" />
     <Compile Include="BaseDados\MySqlQueries.cs" />
+    <Compile Include="Classes\TipoCotacao.cs" />
     <Compile Include="Classes\Corretoras.cs" />
     <Compile Include="Classes\Cotacao.cs" />
     <Compile Include="Classes\CotacaoManager.cs" />
@@ -125,6 +126,14 @@
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="MainRouter.cs" />
+    <Compile Include="Pages\AtivosOrdens.xaml.cs">
+      <DependentUpon>AtivosOrdens.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\IncluirAtivos.xaml.cs">
+      <DependentUpon>IncluirAtivos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\AtivosOrdensMV.cs" />
+    <Compile Include="ViewModel\IncluirAtivosMV.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -141,6 +150,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\AtivosOrdens.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\IncluirAtivos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\ConvertersResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

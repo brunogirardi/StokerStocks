@@ -19,9 +19,14 @@ namespace StokerStocks
         /// Retorna as corretoras do sistema;
         /// </summary>
         /// <returns></returns>
-        public static ObservableCollection<Corretoras> Corretoras()
+        public static List<Corretoras> Corretoras()
         {
             return ((App)Application.Current).Corretoras;
+        }
+
+        public static List<Ativo> Ativos()
+        {
+            return ((App)Application.Current).Ativos;
         }
 
     }

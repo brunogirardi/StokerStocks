@@ -11,11 +11,9 @@ namespace StokerStocks
     public class MainWindowVM : INotifyPropertyChanged
     {
 
-        public ObservableCollection<Ativo> Ativos { get; set; }
+        public List<Notas> Notas { get; set; }
 
-        public ObservableCollection<Notas> Notas { get; set; }
-
-        public ObservableCollection<Corretoras> Corretoras { get; set; }
+        public List<Corretoras> Corretoras { get; set; }
 
         public Notas NotaSelecionada { get; set; }
 
@@ -40,7 +38,6 @@ namespace StokerStocks
             SalvarNota = new RelayCommand(new Action<object>(ExecutarSalvarNota));
             ExcluirNota = new RelayCommand(new Action<object>(ExecutarExcluirNota), new Func<object, bool>(PodeExecutarExcluirNota));
 
-            CarregarAtivo = new RelayCommand(new Action<object>(ExecutarCarregarAtivo));
 
             TicketOrderLostFocus = new RelayCommand(new Action<object>(ExecutarTicketOrderLostFocus));
         }
@@ -150,10 +147,7 @@ namespace StokerStocks
             return false;
         }
 
-        private void ExecutarCarregarAtivo(object obj)
-        {
-            CotacaoManager.UpdateCotacao(2);
-        }
+
 
         /// <summary>
         /// Função carrega as informações do ticket inserido
@@ -189,16 +183,14 @@ namespace StokerStocks
         // Ativos
         public ICommand CarregarAtivo { get; set; }
 
-
+        // Comandos para ações da UI
         public ICommand TicketOrderLostFocus { get; set; }
 
 
 
         #endregion
 
-
         public event PropertyChangedEventHandler PropertyChanged;
-
 
 
     }

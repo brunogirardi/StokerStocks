@@ -1,0 +1,27 @@
+﻿<Window x:Class="StokerStocks.IncluirAtivos"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StokerStocks"
+        mc:Ignorable="d"
+        Title="Cadastro de Ativos" Height="400" Width="800">
+    <Grid Margin="10">
+
+        <TextBlock Text="Pesquisar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="146" />
+        <TextBox VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,21,95,0" Text="{Binding Pesquisa}"  Height="24" />
+
+        <Button Content="Buscar" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,21,0,0" Height="24" Width="90" Command="{Binding Buscar}" />
+
+        <TextBlock Text="Lista de Ativos Encontrado" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,60,0,0" />
+        <DataGrid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,81,0,42" ItemsSource="{Binding Ativos}" SelectedItem="{Binding AtivoSelecionado}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ticket" Width="60" Binding="{Binding Ticket}" />
+                <DataGridTextColumn Header="Nome da Empresa" Width="*" Binding="{Binding Empresa}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Content="Selecionar" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="24" Width="90" Command="{Binding Selecionar}" />
+
+    </Grid>
+</Window>
