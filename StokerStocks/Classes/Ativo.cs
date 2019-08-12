@@ -30,11 +30,13 @@ namespace StokerStocks
 
         public string Corretora { get; set; }
 
-        public ObservableCollection<Ordem> Ordems { get; set; }
+        public List<Ordem> Ordems { get; set; }
 
-        public ObservableCollection<Historico> Historicos { get; set; }
+        public List<Historico> Historicos { get; set; }
 
-        public ObservableCollection<Posicao> Posicoes { get; set; }
+        public List<Posicao> Posicoes { get; set; }
+
+        public List<Cotacao> Cotacoes { get; set; }
 
         public void ObterHistorico()
         {
@@ -43,7 +45,9 @@ namespace StokerStocks
             int Vendas;
             DateTime InicioOp;
             DateTime FinalOp;
-            ObservableCollection<Historico> Historico;
+            List<Historico> Historico;
+
+            if (Ordems.Count == 0) return;
 
             // Verifica a quantidade de compras e vendas para o ativo
             Compras = Ordems.Where(x => x.Operação == Operações.Compra).Sum(x => x.Quantidade);
@@ -57,16 +61,16 @@ namespace StokerStocks
             {
                 // Carrega as cotações para o periodo 
                 FinalOp = UltimoDiaMes(DateTime.Today);
-                //Cotacoes = BancoDados.CarregarCotacoes(InicioOp);
+                Cotacoes = CotacaoManager.HistoricoMensal(IdAtivos, InicioOp, DateTime.Today);
             }
             else
             {
                 FinalOp = UltimoDiaMes(Ordems.Max(x => x.Data));
-                //Cotacoes = BancoDados.CarregarCotacoes(InicioOp, FinalOp);
+                Cotacoes = CotacaoManager.HistoricoMensal(IdAtivos, InicioOp, FinalOp);
             }
 
             // Inicia a variavel do historico do ativo
-            Historico = new ObservableCollection<Historico>();
+            Historico = new List<Historico>();
 
             // Iterar por todas as ordens e adicionar ao Historico
             foreach (Ordem item in Ordems)
@@ -116,7 +120,7 @@ namespace StokerStocks
             Historicos = Historico;
 
             // Posição ao longo dos meses
-            ObservableCollection<Posicao> posicoes = new ObservableCollection<Posicao>();
+            List<Posicao> posicoes = new List<Posicao>();
             DateTime dataAtual = UltimoDiaMes(InicioOp);
             int Quantidade = 0;
             decimal PrecoMedio = 0;
@@ -137,7 +141,7 @@ namespace StokerStocks
                 posicoes.Add(new Posicao()
                 {
                     Data = dataAtual,
-                    //PrecoFechamento = Cotacoes.Where(x => (x.Data < dataAtual) && (x.Data >= PrimeiroDiaMes(dataAtual))).First().Fechamento,
+                    PrecoFechamento = Cotacoes.Where(x => (x.Data < dataAtual) && (x.Data >= PrimeiroDiaMes(dataAtual))).First().Fechamento,
                     Quantidade = Quantidade,
                     PrecoMedio = PrecoMedio,
                     ResultadoConsolidade = Resultado

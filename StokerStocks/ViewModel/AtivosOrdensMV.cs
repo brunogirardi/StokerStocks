@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace StokerStocks
-{ 
+{
     class AtivosOrdensMV
     {
 
@@ -19,11 +19,14 @@ namespace StokerStocks
             Ativos = new ObservableCollection<Ativo>(MainRouter.Ativos());
 
             CarregarAtivo = new RelayCommand(new Action<object>(ExecutarCarregarAtivo));
+            AtualizarCotacoes = new RelayCommand(new Action<object>(ExecutarAtualizarCotacoesAtivo));
 
         }
         #endregion
 
         #region Propriedades
+
+        public ObservableCollection<Ordem> Ordems { get; set; } = new ObservableCollection<Ordem>();
 
         public ObservableCollection<Ativo> Ativos { get; set; }
 
@@ -31,7 +34,15 @@ namespace StokerStocks
         public Ativo AtivoSelecionado
         {
             get { return ativoSelecionado; }
-            set { ativoSelecionado = value; }
+            set {
+
+                ativoSelecionado = value;
+
+                AtivoSelecionado.Ordems = MySqlQueries.CarregarOrdensAtivo(value.IdAtivos);
+
+                AtivoSelecionado.ObterHistorico();
+
+            }
         }
 
         #endregion
@@ -40,6 +51,7 @@ namespace StokerStocks
 
         // Ativos
         public ICommand CarregarAtivo { get; set; }
+        public ICommand AtualizarCotacoes { get; set; }
 
         // Comandos para ações da UI
         public ICommand TicketOrderLostFocus { get; set; }
@@ -48,7 +60,7 @@ namespace StokerStocks
 
         #region Comandos (Funções de Execução e Validação)
 
-                /// <summary>
+        /// <summary>
         /// Adiciona nova ativo a base de Ativos
         /// </summary>
         /// <param name="obj"></param>
@@ -66,6 +78,11 @@ namespace StokerStocks
 
                 Ativos.Add(ativo);
             }
+        }
+
+        private void ExecutarAtualizarCotacoesAtivo(object obj)
+        {
+            CotacaoManager.UpdateCotacao(AtivoSelecionado.IdAtivos);
         }
 
         #endregion

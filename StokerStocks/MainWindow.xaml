@@ -32,23 +32,6 @@
 
             </TabItem>
 
-            <!-- Ordens Executadas -->
-            <TabItem Header="Acompanhamento Mensal">
-                <DataGrid Grid.Column="1" Grid.Row="1" Margin="10" ItemsSource="{Binding Ativos[0].Posicoes}" AutoGenerateColumns="False" CanUserAddRows="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Periodo" Width="100" Binding="{Binding Data}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Quantidade" Width="90" Binding="{Binding Quantidade}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedio}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Total Investido" Width="90" Binding="{Binding TotalInvestido}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Preço Fechamento" Width="90" Binding="{Binding PrecoFechamento}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Total Atualizado" Width="90" Binding="{Binding TotalFechamento}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Result. Virtual" Width="90" Binding="{Binding ResultadoVirtual}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Result. Consolidado" Width="90" Binding="{Binding ResultadoConsolidade}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Result. Projetado" Width="90" Binding="{Binding ResultadoAtual}" IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </TabItem>
-
             <!-- Notas de Corretagem -->
             <TabItem Header="Operações" IsSelected="True" >
                 <Grid>

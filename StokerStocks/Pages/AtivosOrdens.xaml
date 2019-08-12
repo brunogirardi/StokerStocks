@@ -21,34 +21,59 @@
                             IsEditable="True" />
 
             <TextBlock Text="Ativos" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,50,0,0" />
-            <ListBox ItemsSource="{Binding Ativos}" DisplayMemberPath="Ticket" Margin="0,71,0,33" SelectedItem="{Binding AtivoSelecionado}" />
-            <Button Content="+" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Margin="0,0,0,8" Command="{Binding CarregarAtivo}" Grid.Column="1" />
-            <Button Content="-" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Margin="0,0,26,8" Grid.Column="1" />
+            <ListBox ItemsSource="{Binding Ativos}" DisplayMemberPath="Ticket" Margin="0,71,0,25" SelectedItem="{Binding AtivoSelecionado}" />
+            <Button Content="+" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Command="{Binding CarregarAtivo}" />
+            <Button Content="-" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="21" Command="{Binding AtualizarCotacoes}" Margin="0,0,26,0" />
         </Grid>
 
         <Grid Grid.Column="1" Margin="3">
-            <!-- Inserir / editar ordens -->
-            <TextBlock Text="Ticket" VerticalAlignment="Top" HorizontalAlignment="Left" />
-            <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Center" Width="60" Margin="0,21,0,0" IsReadOnly="True" Height="24" />
 
-            <TextBlock Text="Nome do Ativo" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="65,0,0,0" />
-            <TextBox VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="65,21,95,0" IsReadOnly="True" Height="24" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <TextBlock Text="Resultado" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,38,0" Grid.Column="1" />
-            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Right" Width="90" Margin="0,20,0,0" IsReadOnly="True" Height="24" />
+            <Grid Grid.Row="0">
+                <TextBlock Text="Ticket" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                <TextBox VerticalAlignment="Top" Text="{Binding AtivoSelecionado.Ticket}" HorizontalAlignment="Left" TextAlignment="Center" Width="60" Margin="0,21,0,0" IsReadOnly="True" Height="24" />
+
+                <TextBlock Text="Nome do Ativo" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="65,0,0,0" />
+                <TextBox VerticalAlignment="Top" Text="{Binding AtivoSelecionado.Empresa}" HorizontalAlignment="Stretch" Margin="65,21,95,0" IsReadOnly="True" Height="24" />
+
+                <TextBlock Text="Resultado" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,0,38,0" Grid.Column="1" />
+                <TextBox VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Right" Width="90" Margin="0,20,0,0" IsReadOnly="True" Height="24" />
+            </Grid>
 
             <!-- Lista de ordens -->
-            <DataGrid ItemsSource="{Binding Ativos[0].Historicos}" AutoGenerateColumns="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CanUserAddRows="False" Margin="0,55,0,0" Grid.ColumnSpan="2">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding AtivoSelecionado.Historicos }" AutoGenerateColumns="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CanUserAddRows="False" Margin="0,5,0,0">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Data" Width="90" Binding="{Binding Data}" />
+                    <DataGridTextColumn Header="Data" Width="90" Binding="{Binding Data, ConverterCulture='pt-BR', StringFormat=d}" />
                     <DataGridTextColumn Header="Operação" Width="90" Binding="{Binding Operação}" />
-                    <DataGridTextColumn Header="Quant. Operação" Width="90" Binding="{Binding QuantidadeOperacao}" />
-                    <DataGridTextColumn Header="Quant. Total" Width="90" Binding="{Binding QuantidadeAcumulada}" />
-                    <DataGridTextColumn Header="Preço Operação" Width="90" Binding="{Binding PrecoUnitarioOperacao}" />
-                    <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedioCompra}" />
-                    <DataGridTextColumn Header="Saldo Investido" Width="90" Binding="{Binding TotalInvestidoAcumulado}" />
-                    <DataGridTextColumn Header="Resultado Operação" Width="90" Binding="{Binding ResultadoOperacao}" />
-                    <DataGridTextColumn Header="Resultado Acumulado" Width="90" Binding="{Binding ResultadoAcumulado}" />
+                    <DataGridTextColumn Header="Quant. Operação" Width="90" Binding="{Binding QuantidadeOperacao, StringFormat=D}" />
+                    <DataGridTextColumn Header="Quant. Total" Width="90" Binding="{Binding QuantidadeAcumulada, StringFormat=D}" />
+                    <DataGridTextColumn Header="Preço Operação" Width="90" Binding="{Binding PrecoUnitarioOperacao, ConverterCulture='pt-BR', StringFormat=c}" />
+                    <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedioCompra, ConverterCulture='pt-BR', StringFormat=c}" />
+                    <DataGridTextColumn Header="Saldo Investido" Width="90" Binding="{Binding TotalInvestidoAcumulado, ConverterCulture='pt-BR', StringFormat=c}" />
+                    <DataGridTextColumn Header="Resultado Operação" Width="90" Binding="{Binding ResultadoOperacao, ConverterCulture='pt-BR', StringFormat=c}" />
+                    <DataGridTextColumn Header="Resultado Acumulado" Width="90" Binding="{Binding ResultadoAcumulado, ConverterCulture='pt-BR', StringFormat=c}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" Height="5"></GridSplitter>
+            
+            <DataGrid ItemsSource="{Binding AtivoSelecionado.Posicoes}" Grid.Row="3" AutoGenerateColumns="False" CanUserAddRows="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Periodo" Width="100" Binding="{Binding Data}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Quantidade" Width="90" Binding="{Binding Quantidade}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Preço Médio" Width="90" Binding="{Binding PrecoMedio}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Total Investido" Width="90" Binding="{Binding TotalInvestido}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Preço Fechamento" Width="90" Binding="{Binding PrecoFechamento}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Total Atualizado" Width="90" Binding="{Binding TotalFechamento}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Result. Virtual" Width="90" Binding="{Binding ResultadoVirtual}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Result. Consolidado" Width="90" Binding="{Binding ResultadoConsolidade}" IsReadOnly="True" />
+                    <DataGridTextColumn Header="Result. Projetado" Width="90" Binding="{Binding ResultadoAtual}" IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

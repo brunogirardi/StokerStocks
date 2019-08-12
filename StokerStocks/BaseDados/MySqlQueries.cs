@@ -49,9 +49,16 @@ namespace StokerStocks
 
             using (IDbConnection cnn = new MySqlConnection(LoadConnectionString()))
             {
-                var output = cnn.QuerySingleOrDefault<Ativo>("SELECT * FROM ativos WHERE ticket = @Ticket;", new { Ticket });
 
-                return output;
+                try
+                {
+                    var output = cnn.QuerySingleOrDefault<Ativo>("SELECT * FROM ativos WHERE ticket = @Ticket;", new { Ticket });
+                    return output;
+                }
+                catch (NullReferenceException)
+                {
+                    return null;
+                }
             }
 
         }
@@ -174,6 +181,23 @@ namespace StokerStocks
                 return new List<Ordem>(lista);
             }
 
+        }
+
+        /// <summary>
+        /// Retorna todas as ordens feitas para um ativo
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public static List<Ordem> CarregarOrdensAtivo(int Id)
+        {
+            using (IDbConnection cnn = new MySqlConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<Ordem>("SELECT * FROM ordens INNER JOIN notas ON notas.idnotas = ordens.idnotas WHERE idativos = @id ORDER BY data;", new { id = Id });
+
+                List<Ordem> lista = output.ToList();
+
+                return new List<Ordem>(lista);
+            }
         }
 
         /// <summary>
